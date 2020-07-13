@@ -21,6 +21,7 @@ public class MainTest {
         ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
         //2.注入HelloWorld的实例bean
         // HelloWorld h = (HelloWorld)ac.getBean("h");
+        //若通过类类型获取实例，要求当前IOC容器中有且只有一个当前类型的实例bean
         HelloWorld h = ac.getBean(HelloWorld.class);
         //3.使用bean
         h.work();

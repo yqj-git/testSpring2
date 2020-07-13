@@ -20,17 +20,33 @@ public class MainTest {
         System.out.println(dataSource);
         //3.获得链接对象
         Connection connection = dataSource.getConnection();
+
+        //设置当前数据库操作为不自动提交
+        connection.setAutoCommit(false);
+
         //4.创建语句对象
         PreparedStatement preparedStatement = connection.prepareStatement("select name from t_dept where id=?");
         //5.给占位符?传值 第一个参数：给第几个?传值  第二个参数：传递的数值
         preparedStatement.setInt(1,2);
+
+        //设置保存点
+        connection.setSavepoint("sp");
+
         //6.执行，返回结果集
         ResultSet resultSet = preparedStatement.executeQuery();
+
+        //事务回滚
+        connection.rollback();
+
         //7.处理结果集
         while (resultSet.next()){
             String name = resultSet.getString(1);
             System.out.println(name);
         }
+
+        //事务提交
+        connection.commit();
+
         //8.关闭资源
         if(resultSet!=null){
             resultSet.close();
